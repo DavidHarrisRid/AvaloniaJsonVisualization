@@ -54,14 +54,31 @@
                                    FontSize="13" />
                     </StackPanel>
 
-                    <Button DockPanel.Dock="Right"
-                            Width="44"
-                            Height="44"
-                            HorizontalAlignment="Right"
-                            Content="?"
-                            FontSize="22"
-                            FontWeight="Bold"
-                            Click="HelpButton_OnClick" />
+                    <StackPanel DockPanel.Dock="Right"
+                                Orientation="Horizontal"
+                                Spacing="10"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top">
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Example"
+                                       Foreground="#999"
+                                       FontSize="12" />
+
+                            <ComboBox x:Name="SampleSelector"
+                                      Width="260"
+                                      SelectionChanged="SampleSelector_OnSelectionChanged" />
+                        </StackPanel>
+
+                        <Button Background="DeepPink"
+                                Width="44"
+                                Height="44"
+                                Content=" ?"
+                                FontSize="22"
+                                Padding="10"
+                                FontWeight="Bold"
+                                Click="HelpButton_OnClick" />
+                    </StackPanel>
                 </DockPanel>
 
                 <TextBlock Text="1. JSON Input"

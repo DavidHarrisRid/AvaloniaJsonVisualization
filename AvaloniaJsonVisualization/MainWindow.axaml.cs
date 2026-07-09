@@ -17,31 +17,43 @@ public partial class MainWindow : Window
     private TextMate.Installation? _jsonTextMateInstallation;
     private TextMate.Installation? _scriptTextMateInstallation;
 
+
     public MainWindow()
     {
         InitializeComponent();
 
         // Beide Editor-Felder werden als richtige Code-Editoren konfiguriert.
         ConfigureEditors();
-
+        
         // Die TextChanged-Events der AvaloniaEdit-Editoren lösen die Pipeline aus.
         JsonInput.TextChanged += Editor_OnTextChanged;
         ScriptInput.TextChanged += Editor_OnTextChanged;
+        
+        // Die verfügbaren Beispiele werden in die ComboBox geladen.
+        SampleSelector.ItemsSource = VisualizationSamples.All;
 
-        // Beispiel-JSON beim Start der App.
-        JsonInput.Text = """{ "name": "Device", "power": 42 }""";
+        // Das erste Beispiel wird beim Start automatisch ausgewählt.
+        SampleSelector.SelectedIndex = 0;
 
-        // Beispiel-JavaScript beim Start der App.
-        ScriptInput.Text = """
-        function render(data) {
-            return `
-                <div style="padding: 28px;"> 
-                    <h1 style="color: #FACC15; font-size: 34px;">${h(data.name)}</h1> 
-                    <p style="color: #D1D5DB; font-size: 22px;">${h(data.power)} W</p> 
-                </div>
-            `;
+        // Falls das SelectionChanged-Event beim Start nicht feuert, wird das Beispiel hier sicher geladen.
+        ApplySelectedSample();
+    }
+    
+    private void SampleSelector_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        ApplySelectedSample();
+    }
+
+    private void ApplySelectedSample()
+    {
+        if (SampleSelector.SelectedItem is not VisualizationSample sample)
+        {
+            return;
         }
-        """;
+
+        // JSON und Visualizer-Script kommen aus dem ausgewählten Beispiel.
+        JsonInput.Text = sample.Json;
+        ScriptInput.Text = sample.Script;
 
         RunPipeline();
     }
