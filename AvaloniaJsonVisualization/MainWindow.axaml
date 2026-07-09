@@ -166,143 +166,194 @@
 
         <Border x:Name="HelpOverlay"
                 IsVisible="False"
-                Background="#CC000000"
-                Padding="40">
+                Background="#F2161616">
 
-            <Border MaxWidth="860"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="#1E1E1E"
-                    BorderBrush="#666"
-                    BorderThickness="1"
-                    CornerRadius="14"
-                    Padding="28">
+            <Grid RowDefinitions="Auto,*"
+                  Margin="32">
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled"
-                              MaxHeight="680">
+                <Border Grid.Row="0"
+                        Background="#202020"
+                        BorderBrush="#444"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="24"
+                        Margin="0,0,0,18">
 
-                    <StackPanel Spacing="16">
-
-                        <DockPanel LastChildFill="False">
-                            <TextBlock DockPanel.Dock="Left"
-                                       Text="How this app works"
-                                       FontSize="26"
+                    <DockPanel LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Text="How this app works"
+                                       FontSize="32"
                                        FontWeight="Bold"
                                        Foreground="#F5F5F5" />
 
-                            <Button DockPanel.Dock="Right"
-                                    Content="Close"
-                                    Padding="18,8"
-                                    Click="CloseHelpButton_OnClick" />
-                        </DockPanel>
+                            <TextBlock Text="A simple guide to JSON, data, render(data), and the WebView preview."
+                                       FontSize="17"
+                                       Foreground="#A3A3A3"
+                                       Margin="0,8,0,0" />
+                        </StackPanel>
 
-                        <TextBlock TextWrapping="Wrap"
-                                   Foreground="#D4D4D4"
-                                   FontSize="15"
-                                   Text="This app turns JSON data into a visual HTML preview. You paste JSON into the first box, write a small JavaScript render function in the script box, and the result appears in the WebView preview." />
+                        <Button DockPanel.Dock="Right"
+                                Content="Close"
+                                FontSize="16"
+                                Padding="24,12"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Click="CloseHelpButton_OnClick" />
+                    </DockPanel>
 
-                        <TextBlock Text="Step 1: JSON input"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="#FACC15" />
+                </Border>
 
-                        <TextBlock TextWrapping="Wrap"
-                                   Foreground="#D4D4D4"
-                                   FontSize="15"
-                                   Text="The first box contains JSON data. The startup example has two values: name and power." />
+                <Border Grid.Row="1"
+                        Background="#1E1E1E"
+                        BorderBrush="#444"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="34">
 
-                        <Border Background="#111111"
-                                BorderBrush="#333"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="14">
+                    <ScrollViewer VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Disabled">
 
-                            <TextBlock FontFamily="Consolas"
-                                       Foreground="#E5E7EB"
-                                       TextWrapping="Wrap">{ "name": "Device", "power": 42 }</TextBlock>
+                        <StackPanel Spacing="30"
+                                    MaxWidth="1000">
 
-                        </Border>
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="The basic idea"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#FACC15" />
 
-                        <TextBlock Text="Step 2: The JSON becomes data"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="#FACC15" />
-
-                        <TextBlock TextWrapping="Wrap"
-                                   Foreground="#D4D4D4"
-                                   FontSize="15"
-                                   Text="Inside the JavaScript script, the parsed JSON is available as a variable named data. That means data.name gives you Device, and data.power gives you 42." />
-
-                        <Border Background="#111111"
-                                BorderBrush="#333"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="14">
-
-                            <StackPanel Spacing="4">
-                                <TextBlock FontFamily="Consolas"
-                                           Foreground="#E5E7EB"
-                                           Text="data.name   -> Device" />
-
-                                <TextBlock FontFamily="Consolas"
-                                           Foreground="#E5E7EB"
-                                           Text="data.power  -> 42" />
+                                <TextBlock TextWrapping="Wrap"
+                                           LineHeight="30"
+                                           Foreground="#D4D4D4"
+                                           FontSize="18"
+                                           Text="This app turns JSON data into a visual HTML preview. You paste JSON into the first box, write a small JavaScript render function in the script box, and the result appears in the WebView preview." />
                             </StackPanel>
 
-                        </Border>
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="Step 1: JSON input"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#FACC15" />
 
-                        <TextBlock Text="Step 3: render(data) creates the visual output"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="#FACC15" />
+                                <TextBlock TextWrapping="Wrap"
+                                           LineHeight="30"
+                                           Foreground="#D4D4D4"
+                                           FontSize="18"
+                                           Text="The first box contains JSON data. The startup example has two values: name and power." />
 
-                        <TextBlock TextWrapping="Wrap"
-                                   Foreground="#D4D4D4"
-                                   FontSize="15"
-                                   Text="The script box must define a JavaScript function called render(data). This function returns HTML. The WebView shows that returned HTML." />
+                                <Border Background="#111111"
+                                        BorderBrush="#333"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="18">
 
-                        <Border Background="#111111"
-                                BorderBrush="#333"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="14">
+                                    <TextBlock FontFamily="Consolas"
+                                               Foreground="#E5E7EB"
+                                               FontSize="17"
+                                               TextWrapping="Wrap">{ "name": "Device", "power": 42 }</TextBlock>
 
-                            <TextBlock FontFamily="Consolas"
-                                       Foreground="#E5E7EB"
-                                       TextWrapping="Wrap">function render(data) {
-    return `
-        &lt;h1&gt;${h(data.name)}&lt;/h1&gt;
-        &lt;p&gt;${h(data.power)} W&lt;/p&gt;
-    `;
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="Step 2: The JSON becomes data"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#FACC15" />
+
+                                <TextBlock TextWrapping="Wrap"
+                                           LineHeight="30"
+                                           Foreground="#D4D4D4"
+                                           FontSize="18"
+                                           Text="Inside the JavaScript script, the parsed JSON is available as a variable named data. That means data.name gives you Device, and data.power gives you 42." />
+
+                                <Border Background="#111111"
+                                        BorderBrush="#333"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="18">
+
+                                    <StackPanel Spacing="8">
+                                        <TextBlock FontFamily="Consolas"
+                                                   Foreground="#E5E7EB"
+                                                   FontSize="17"
+                                                   Text="data.name   -> Device" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   Foreground="#E5E7EB"
+                                                   FontSize="17"
+                                                   Text="data.power  -> 42" />
+                                    </StackPanel>
+
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="Step 3: render(data) creates the visual output"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#FACC15" />
+
+                                <TextBlock TextWrapping="Wrap"
+                                           LineHeight="30"
+                                           Foreground="#D4D4D4"
+                                           FontSize="18"
+                                           Text="The script box must define a JavaScript function called render(data). This function returns HTML. The WebView shows that returned HTML." />
+
+                                <Border Background="#111111"
+                                        BorderBrush="#333"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="18">
+
+                                    <TextBlock xml:space="preserve"
+                                               FontFamily="Consolas"
+                                               Foreground="#E5E7EB"
+                                               FontSize="17"
+                                               TextWrapping="Wrap"><Run>function render(data) {</Run>
+    <Run>    return `</Run>
+    <Run>        &lt;div style="padding: 28px;"&gt; </Run>
+    <Run Foreground="#D1D5DB">             &lt;h1 style="color: #FACC15; font-size: 34px;"&gt;${h(data.name)}&lt;/h1&gt; </Run>
+    <Run Foreground="#D1D5DB">             &lt;p style="color: #D1D5DB; font-size: 22px; "&gt;${h(data.power)} W&lt;/p&gt; </Run>
+    <Run>         &lt;/div&gt;</Run>
+    <Run>    `;</Run>
+    <Run>}</Run>
 }</TextBlock>
 
-                        </Border>
+                                </Border>
+                            </StackPanel>
 
-                        <TextBlock Text="Step 4: Use h(...) for values from JSON"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="#FACC15" />
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="Step 4: Use h(...) for JSON values"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#FACC15" />
 
-                        <TextBlock TextWrapping="Wrap"
-                                   Foreground="#D4D4D4"
-                                   FontSize="15"
-                                   Text="When you show values from the JSON, use h(...). This safely converts the value into text for HTML. Example: h(data.name)." />
+                                <TextBlock TextWrapping="Wrap"
+                                           LineHeight="30"
+                                           Foreground="#D4D4D4"
+                                           FontSize="18"
+                                           Text="When you show values from the JSON, use h(...). This safely converts the value into text for HTML. Example: h(data.name)." />
+                            </StackPanel>
 
-                        <TextBlock Text="The full flow"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="#FACC15" />
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="The full flow"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#FACC15" />
 
-                        <Border Background="#111111"
-                                BorderBrush="#333"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="14">
+                                <Border Background="#111111"
+                                        BorderBrush="#333"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="18">
 
-                            <TextBlock FontFamily="Consolas"
-                                       Foreground="#E5E7EB"
-                                       TextWrapping="Wrap">JSON input
+                                    <TextBlock xml:space="preserve"
+                                               FontFamily="Consolas"
+                                               Foreground="#E5E7EB"
+                                               FontSize="17"
+                                               LineHeight="28"
+                                               TextWrapping="Wrap">JSON input
    ↓
 C# parses the JSON
    ↓
@@ -312,16 +363,27 @@ render(data) returns HTML
    ↓
 WebView shows the result</TextBlock>
 
-                        </Border>
+                                </Border>
+                            </StackPanel>
 
-                        <TextBlock TextWrapping="Wrap"
-                                   Foreground="#A3A3A3"
-                                   FontSize="14"
-                                   Text="To try your own data, change the JSON first. Then change the JavaScript to read the matching fields from data." />
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="How to try your own data"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#FACC15" />
 
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
+                                <TextBlock TextWrapping="Wrap"
+                                           LineHeight="30"
+                                           Foreground="#D4D4D4"
+                                           FontSize="18"
+                                           Text="First change the JSON. Then change the JavaScript to read the matching fields from data. For example, if your JSON has a field called temperature, you can use data.temperature in the script." />
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 
