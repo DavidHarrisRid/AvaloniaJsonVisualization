@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         mc:Ignorable="d"
         d:DesignWidth="1200"
         d:DesignHeight="800"
@@ -10,6 +11,7 @@
         WindowState="Maximized">
 
     <Window.Styles>
+        <!-- Kleiner grauer Resize-Griff unter jeder Box. -->
         <Style Selector="Thumb.ResizeHandle">
             <Setter Property="Height" Value="10" />
             <Setter Property="MinHeight" Value="10" />
@@ -23,6 +25,7 @@
             </Setter>
         </Style>
 
+        <!-- Etwas hellerer Resize-Griff, wenn die Maus darüber ist. -->
         <Style Selector="Thumb.ResizeHandle:pointerover">
             <Setter Property="Template">
                 <ControlTemplate>
@@ -40,7 +43,6 @@
             <StackPanel Margin="14"
                         Spacing="8">
 
-
                 <DockPanel LastChildFill="False">
                     <StackPanel DockPanel.Dock="Left">
                         <TextBlock Text="JSON Visualizer"
@@ -52,30 +54,14 @@
                                    FontSize="13" />
                     </StackPanel>
 
-                    <StackPanel DockPanel.Dock="Right"
-                                Orientation="Horizontal"
-                                Spacing="10"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top">
-
-                        <StackPanel Spacing="4">
-                            <TextBlock Text="Example"
-                                       Foreground="#999"
-                                       FontSize="12" />
-
-                            <ComboBox x:Name="SampleSelector"
-                                      Width="260"
-                                      SelectionChanged="SampleSelector_OnSelectionChanged" />
-                        </StackPanel>
-
-                        <Button Width="44"
-                                Height="44"
-                                Content="?"
-                                FontSize="22"
-                                FontWeight="Bold"
-                                Click="HelpButton_OnClick" />
-
-                    </StackPanel>
+                    <Button DockPanel.Dock="Right"
+                            Width="44"
+                            Height="44"
+                            HorizontalAlignment="Right"
+                            Content="?"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Click="HelpButton_OnClick" />
                 </DockPanel>
 
                 <TextBlock Text="1. JSON Input"
@@ -83,23 +69,23 @@
                            FontWeight="Bold" />
 
                 <Border x:Name="JsonInputBox"
-                        Height="120"
-                        MinHeight="60"
+                        Height="160"
+                        MinHeight="80"
                         BorderBrush="#555"
                         BorderThickness="1"
                         CornerRadius="8"
                         Background="#101014"
-                        Padding="8">
+                        Padding="0">
 
-                    <TextBox x:Name="JsonInput"
-                             AcceptsReturn="True"
-                             TextWrapping="NoWrap"
-                             FontFamily="Consolas"
-                             FontSize="13"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Watermark="Paste JSON here..."
-                             TextChanged="Input_OnTextChanged" />
+                    <!-- AvaloniaEdit ersetzt hier die normale TextBox.
+                         Dadurch bekommt JSON Line-Numbers, Syntax-Highlighting und besseres Editor-Verhalten. -->
+                    <avaloniaEdit:TextEditor x:Name="JsonInput"
+                                             ShowLineNumbers="True"
+                                             WordWrap="False"
+                                             FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                                             FontSize="13"
+                                             Background="#101014"
+                                             Foreground="#D1D5DB" />
 
                 </Border>
 
@@ -131,23 +117,23 @@
                            FontWeight="Bold" />
 
                 <Border x:Name="ScriptInputBox"
-                        Height="180"
-                        MinHeight="60"
+                        Height="240"
+                        MinHeight="100"
                         BorderBrush="#555"
                         BorderThickness="1"
                         CornerRadius="8"
                         Background="#101014"
-                        Padding="8">
+                        Padding="0">
 
-                    <TextBox x:Name="ScriptInput"
-                             AcceptsReturn="True"
-                             TextWrapping="NoWrap"
-                             FontFamily="Consolas"
-                             FontSize="13"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Watermark="function render(data) { return html; }"
-                             TextChanged="Input_OnTextChanged" />
+                    <!-- AvaloniaEdit ersetzt hier die normale TextBox.
+                         Dadurch bekommt JavaScript Line-Numbers, Syntax-Highlighting und bessere Einrückung. -->
+                    <avaloniaEdit:TextEditor x:Name="ScriptInput"
+                                             ShowLineNumbers="True"
+                                             WordWrap="False"
+                                             FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                                             FontSize="13"
+                                             Background="#101014"
+                                             Foreground="#D1D5DB" />
 
                 </Border>
 
@@ -243,7 +229,7 @@
                                            LineHeight="30"
                                            Foreground="#D4D4D4"
                                            FontSize="18"
-                                           Text="This app turns JSON data into a visual HTML preview. You paste JSON into the first box, write a small JavaScript render function in the script box, and the result appears in the WebView preview." />
+                                           Text="This app turns JSON data into a visual HTML preview. You paste JSON into the first editor, write a small JavaScript render function in the script editor, and the result appears in the WebView preview." />
                             </StackPanel>
 
                             <StackPanel Spacing="12">
@@ -256,7 +242,7 @@
                                            LineHeight="30"
                                            Foreground="#D4D4D4"
                                            FontSize="18"
-                                           Text="The first box contains JSON data. The startup example has two values: name and power." />
+                                           Text="The first editor contains JSON data. The startup example has two values: name and power." />
 
                                 <Border Background="#111111"
                                         BorderBrush="#333"
@@ -315,7 +301,7 @@
                                            LineHeight="30"
                                            Foreground="#D4D4D4"
                                            FontSize="18"
-                                           Text="The script box must define a JavaScript function called render(data). This function returns HTML. The WebView shows that returned HTML." />
+                                           Text="The script editor must define a JavaScript function called render(data). This function returns HTML. The WebView shows that returned HTML." />
 
                                 <Border Background="#111111"
                                         BorderBrush="#333"
@@ -327,14 +313,13 @@
                                                FontFamily="Consolas"
                                                Foreground="#E5E7EB"
                                                FontSize="17"
-                                               TextWrapping="Wrap"><Run>function render(data) {</Run>
-    <Run>    return `</Run>
-    <Run>        &lt;div style="padding: 28px;"&gt; </Run>
-    <Run Foreground="#D1D5DB">             &lt;h1 style="color: #FACC15; font-size: 34px;"&gt;${h(data.name)}&lt;/h1&gt; </Run>
-    <Run Foreground="#D1D5DB">             &lt;p style="color: #D1D5DB; font-size: 22px; "&gt;${h(data.power)} W&lt;/p&gt; </Run>
-    <Run>         &lt;/div&gt;</Run>
-    <Run>    `;</Run>
-    <Run>}</Run>
+                                               TextWrapping="Wrap">function render(data) {
+    return `
+        &lt;div style="padding: 28px;"&gt;
+            &lt;h1 style="color: #FACC15; font-size: 34px;"&gt;${h(data.name)}&lt;/h1&gt;
+            &lt;p style="color: #D1D5DB; font-size: 22px;"&gt;${h(data.power)} W&lt;/p&gt;
+        &lt;/div&gt;
+    `;
 }</TextBlock>
 
                                 </Border>

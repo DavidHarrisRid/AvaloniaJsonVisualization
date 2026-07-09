@@ -6,39 +6,88 @@ using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using AvaloniaEdit;
+using AvaloniaEdit.TextMate;
+using TextMateSharp.Grammars;
+
 namespace AvaloniaJsonVisualization;
 
 public partial class MainWindow : Window
 {
+    private TextMate.Installation? _jsonTextMateInstallation;
+    private TextMate.Installation? _scriptTextMateInstallation;
 
     public MainWindow()
     {
         InitializeComponent();
 
-        SampleSelector.ItemsSource = VisualizationSamples.All;
-        SampleSelector.SelectedIndex = 0;
-    }
-    
-    private void SampleSelector_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        ApplySelectedSample();
-    }
+        // Beide Editor-Felder werden als richtige Code-Editoren konfiguriert.
+        ConfigureEditors();
 
-    private void ApplySelectedSample()
-    {
-        if (SampleSelector.SelectedItem is not VisualizationSample sample)
-        {
-            return;
+        // Die TextChanged-Events der AvaloniaEdit-Editoren lösen die Pipeline aus.
+        JsonInput.TextChanged += Editor_OnTextChanged;
+        ScriptInput.TextChanged += Editor_OnTextChanged;
+
+        // Beispiel-JSON beim Start der App.
+        JsonInput.Text = """{ "name": "Device", "power": 42 }""";
+
+        // Beispiel-JavaScript beim Start der App.
+        ScriptInput.Text = """
+        function render(data) {
+            return `
+                <div style="padding: 28px;"> 
+                    <h1 style="color: #FACC15; font-size: 34px;">${h(data.name)}</h1> 
+                    <p style="color: #D1D5DB; font-size: 22px;">${h(data.power)} W</p> 
+                </div>
+            `;
         }
-
-        JsonInput.Text = sample.Json;
-        ScriptInput.Text = sample.Script;
+        """;
 
         RunPipeline();
     }
-    
+
+    private void ConfigureEditors()
+    {
+        // JSON-Editor mit JSON-Grammatik konfigurieren.
+        _jsonTextMateInstallation = ConfigureEditor(JsonInput, ".json");
+
+        // JavaScript-Editor mit JavaScript-Grammatik konfigurieren.
+        _scriptTextMateInstallation = ConfigureEditor(ScriptInput, ".js");
+    }
+
+    private static TextMate.Installation ConfigureEditor(TextEditor editor, string extension)
+    {
+        // Grundlegendes Editor-Verhalten.
+        editor.Options.ConvertTabsToSpaces = true;
+        editor.Options.IndentationSize = 4;
+        editor.Options.EnableHyperlinks = false;
+        editor.Options.EnableEmailHyperlinks = false;
+
+        // TextMate liefert die dunkle Theme-Färbung und die Sprach-Grammatiken.
+        var registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+        var installation = editor.InstallTextMate(registryOptions);
+
+        // Sprache anhand der Dateiendung auswählen, z.B. ".json" oder ".js".
+        var language = registryOptions.GetLanguageByExtension(extension);
+
+        if (language is not null)
+        {
+            var scopeName = registryOptions.GetScopeByLanguageId(language.Id);
+            installation.SetGrammar(scopeName);
+        }
+
+        return installation;
+    }
+
+    private void Editor_OnTextChanged(object? sender, EventArgs e)
+    {
+        RunPipeline();
+    }
+
     private void HelpButton_OnClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        // NativeWebView liegt technisch manchmal über Avalonia-Overlays.
+        // Deshalb wird die WebView ausgeblendet, solange die Hilfe offen ist.
         WebPreview.IsVisible = false;
         WebPreviewBox.IsVisible = false;
 
@@ -49,10 +98,11 @@ public partial class MainWindow : Window
     {
         HelpOverlay.IsVisible = false;
 
+        // Nach dem Schließen der Hilfe wird die WebView wieder eingeblendet.
         WebPreviewBox.IsVisible = true;
         WebPreview.IsVisible = true;
     }
-    
+
     private void JsonInputResizeThumb_OnDragDelta(object? sender, VectorEventArgs e)
     {
         ResizeBox(JsonInputBox, e.Vector.Y);
@@ -75,24 +125,19 @@ public partial class MainWindow : Window
 
     private static void ResizeBox(Control box, double deltaY)
     {
+        // Die aktuelle Höhe wird verändert, damit nur diese Box größer oder kleiner wird.
         var currentHeight = double.IsNaN(box.Height) ? box.Bounds.Height : box.Height;
         var newHeight = Math.Max(box.MinHeight, currentHeight + deltaY);
 
         box.Height = newHeight;
     }
 
-    // Wird ausgelöst, sobald sich JSON-Input oder Script-Input ändert.
-    private void Input_OnTextChanged(object? sender, TextChangedEventArgs e)
-    {
-        RunPipeline();
-    }
-
     private void RunPipeline()
     {
-        // Rohes JSON aus dem Eingabefeld.
+        // Rohes JSON aus dem JSON-Editor.
         var json = JsonInput.Text ?? "";
 
-        // JavaScript-Visualizer-Code aus dem Script-Feld.
+        // JavaScript-Visualizer-Code aus dem Script-Editor.
         var script = ScriptInput.Text ?? "";
 
         try
@@ -193,7 +238,7 @@ public partial class MainWindow : Window
             }
 
             try {
-                // Hier wird das JavaScript aus dem Script-Textfeld eingefügt.
+                // Hier wird das JavaScript aus dem Script-Editor eingefügt.
                 {{script}}
 
                 // Das User-Script muss render(data) bereitstellen.
