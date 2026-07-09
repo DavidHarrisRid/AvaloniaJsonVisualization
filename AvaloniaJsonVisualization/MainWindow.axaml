@@ -2,68 +2,139 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="1200"
+        d:DesignHeight="800"
         x:Class="AvaloniaJsonVisualization.MainWindow"
-        Title="AvaloniaJsonVisualization">
-    
-        <Grid RowDefinitions="Auto,100,Auto,180,Auto,100,Auto,*"
-              Margin="12"
-              RowSpacing="8">
+        Title="AvaloniaJsonVisualization"
+        WindowState="Maximized">
 
-                <TextBlock Grid.Row="0"
-                           Text="1. JSON Input"
-                           FontWeight="Bold" />
+    <Window.Styles>
+        <Style Selector="Thumb.ResizeHandle">
+            <Setter Property="Height" Value="10" />
+            <Setter Property="MinHeight" Value="10" />
+            <Setter Property="Cursor" Value="SizeNorthSouth" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="#3A3A3A"
+                            CornerRadius="4" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="Thumb.ResizeHandle:pointerover">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="#555555"
+                            CornerRadius="4" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+    </Window.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Visible"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="14"
+                    Spacing="8">
+
+            <TextBlock Text="1. JSON Input"
+                       FontSize="15"
+                       FontWeight="Bold" />
+
+            <Border x:Name="JsonInputBox"
+                    Height="120"
+                    MinHeight="60"
+                    BorderBrush="#555"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Background="#101014"
+                    Padding="8">
 
                 <TextBox x:Name="JsonInput"
-                         Grid.Row="1"
                          AcceptsReturn="True"
                          TextWrapping="NoWrap"
                          FontFamily="Consolas"
                          FontSize="13"
+                         Background="Transparent"
+                         BorderThickness="0"
                          Watermark="Paste JSON here..."
                          TextChanged="Input_OnTextChanged" />
 
-                <TextBlock Grid.Row="2"
-                           Text="2. JSON Tree View"
-                           FontWeight="Bold" />
+            </Border>
 
-                <Border Grid.Row="3"
-                        BorderBrush="#444"
-                        BorderThickness="1"
-                        CornerRadius="6"
-                        Padding="8">
+            <Thumb Classes="ResizeHandle"
+                   DragDelta="JsonInputResizeThumb_OnDragDelta" />
 
-                        <TreeView x:Name="JsonTree" />
+            <TextBlock Text="2. JSON Tree View"
+                       FontSize="15"
+                       FontWeight="Bold" />
 
-                </Border>
+            <Border x:Name="JsonTreeBox"
+                    Height="220"
+                    MinHeight="80"
+                    BorderBrush="#555"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Background="#101014"
+                    Padding="8">
 
-                <TextBlock Grid.Row="4"
-                           Text="3. Visualizer Script"
-                           FontWeight="Bold" />
+                <TreeView x:Name="JsonTree" />
+
+            </Border>
+
+            <Thumb Classes="ResizeHandle"
+                   DragDelta="JsonTreeResizeThumb_OnDragDelta" />
+
+            <TextBlock Text="3. Visualizer Script"
+                       FontSize="15"
+                       FontWeight="Bold" />
+
+            <Border x:Name="ScriptInputBox"
+                    Height="120"
+                    MinHeight="60"
+                    BorderBrush="#555"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Background="#101014"
+                    Padding="8">
 
                 <TextBox x:Name="ScriptInput"
-                         Grid.Row="5"
                          AcceptsReturn="True"
                          TextWrapping="NoWrap"
                          FontFamily="Consolas"
                          FontSize="13"
+                         Background="Transparent"
+                         BorderThickness="0"
                          Watermark="function render(data) { return html; }"
                          TextChanged="Input_OnTextChanged" />
 
-                <TextBlock x:Name="StatusText"
-                           Grid.Row="6"
-                           Text="Waiting for input..." />
+            </Border>
 
-                <Border Grid.Row="7"
-                        BorderBrush="#333"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        ClipToBounds="True">
+            <Thumb Classes="ResizeHandle"
+                   DragDelta="ScriptInputResizeThumb_OnDragDelta" />
 
-                        <NativeWebView x:Name="WebPreview" />
+            <TextBlock x:Name="StatusText"
+                       Text="Waiting for input..."
+                       Foreground="#CCC" />
 
-                </Border>
+            <Border x:Name="WebPreviewBox"
+                    Height="420"
+                    MinHeight="120"
+                    BorderBrush="#444"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Background="#08080B"
+                    ClipToBounds="True">
 
-        </Grid>
-        
+                <NativeWebView x:Name="WebPreview" />
+
+            </Border>
+
+            <Thumb Classes="ResizeHandle"
+                   DragDelta="WebPreviewResizeThumb_OnDragDelta" />
+
+        </StackPanel>
+    </ScrollViewer>
+
 </Window>

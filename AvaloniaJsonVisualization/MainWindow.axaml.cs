@@ -4,7 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Avalonia.Controls;
-
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 namespace AvaloniaJsonVisualization;
 
 public partial class MainWindow : Window
@@ -12,6 +13,33 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+    }
+    private void JsonInputResizeThumb_OnDragDelta(object? sender, VectorEventArgs e)
+    {
+        ResizeBox(JsonInputBox, e.Vector.Y);
+    }
+
+    private void JsonTreeResizeThumb_OnDragDelta(object? sender, VectorEventArgs e)
+    {
+        ResizeBox(JsonTreeBox, e.Vector.Y);
+    }
+
+    private void ScriptInputResizeThumb_OnDragDelta(object? sender, VectorEventArgs e)
+    {
+        ResizeBox(ScriptInputBox, e.Vector.Y);
+    }
+
+    private void WebPreviewResizeThumb_OnDragDelta(object? sender, VectorEventArgs e)
+    {
+        ResizeBox(WebPreviewBox, e.Vector.Y);
+    }
+
+    private static void ResizeBox(Control box, double deltaY)
+    {
+        var currentHeight = double.IsNaN(box.Height) ? box.Bounds.Height : box.Height;
+        var newHeight = Math.Max(box.MinHeight, currentHeight + deltaY);
+
+        box.Height = newHeight;
     }
 
     // Wird ausgelöst, sobald sich JSON-Input oder Script-Input ändert.
