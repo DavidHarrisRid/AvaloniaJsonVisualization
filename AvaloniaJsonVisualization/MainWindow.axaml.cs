@@ -13,7 +13,34 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        JsonInput.Text = """{ "name": "Device", "power": 42 }""";
+
+        ScriptInput.Text = """
+                           function render(data) {
+                               return `
+                                   <div style="padding: 28px;"> 
+                                        <h1 style="color: #FACC15; font-size: 34px;">${h(data.name)}</h1> 
+                                        <p style="color: #D1D5DB; font-size: 22px; ">${h(data.power)} W</p> 
+                                    </div>
+                               `;
+                           }
+                           """;
+
+        RunPipeline();
     }
+    
+    
+    private void HelpButton_OnClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        HelpOverlay.IsVisible = true;
+    }
+
+    private void CloseHelpButton_OnClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        HelpOverlay.IsVisible = false;
+    }
+    
     private void JsonInputResizeThumb_OnDragDelta(object? sender, VectorEventArgs e)
     {
         ResizeBox(JsonInputBox, e.Vector.Y);
