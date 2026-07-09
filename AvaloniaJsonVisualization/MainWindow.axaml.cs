@@ -10,26 +10,32 @@ namespace AvaloniaJsonVisualization;
 
 public partial class MainWindow : Window
 {
+
     public MainWindow()
     {
         InitializeComponent();
 
-        JsonInput.Text = """{ "name": "Device", "power": 42 }""";
+        SampleSelector.ItemsSource = VisualizationSamples.All;
+        SampleSelector.SelectedIndex = 0;
+    }
+    
+    private void SampleSelector_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        ApplySelectedSample();
+    }
 
-        ScriptInput.Text = """
-                           function render(data) {
-                               return `
-                                   <div style="padding: 28px;"> 
-                                        <h1 style="color: #FACC15; font-size: 34px;">${h(data.name)}</h1> 
-                                        <p style="color: #D1D5DB; font-size: 22px; ">${h(data.power)} W</p> 
-                                    </div>
-                               `;
-                           }
-                           """;
+    private void ApplySelectedSample()
+    {
+        if (SampleSelector.SelectedItem is not VisualizationSample sample)
+        {
+            return;
+        }
+
+        JsonInput.Text = sample.Json;
+        ScriptInput.Text = sample.Script;
 
         RunPipeline();
     }
-    
     
     private void HelpButton_OnClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
