@@ -3,6 +3,7 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="AvaloniaJsonVisualization/App.axaml" value="AvaloniaJsonVisualization/AvaloniaJsonVisualization.csproj" />
         <entry key="AvaloniaJsonVisualization/MainWindow.axaml" value="AvaloniaJsonVisualization/AvaloniaJsonVisualization.csproj" />
       </map>
     </option>

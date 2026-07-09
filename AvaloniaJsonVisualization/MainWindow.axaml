@@ -5,5 +5,65 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AvaloniaJsonVisualization.MainWindow"
         Title="AvaloniaJsonVisualization">
-    Welcome to Avalonia!
+    
+        <Grid RowDefinitions="Auto,100,Auto,180,Auto,100,Auto,*"
+              Margin="12"
+              RowSpacing="8">
+
+                <TextBlock Grid.Row="0"
+                           Text="1. JSON Input"
+                           FontWeight="Bold" />
+
+                <TextBox x:Name="JsonInput"
+                         Grid.Row="1"
+                         AcceptsReturn="True"
+                         TextWrapping="NoWrap"
+                         FontFamily="Consolas"
+                         FontSize="13"
+                         Watermark="Paste JSON here..."
+                         TextChanged="Input_OnTextChanged" />
+
+                <TextBlock Grid.Row="2"
+                           Text="2. JSON Tree View"
+                           FontWeight="Bold" />
+
+                <Border Grid.Row="3"
+                        BorderBrush="#444"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="8">
+
+                        <TreeView x:Name="JsonTree" />
+
+                </Border>
+
+                <TextBlock Grid.Row="4"
+                           Text="3. Visualizer Script"
+                           FontWeight="Bold" />
+
+                <TextBox x:Name="ScriptInput"
+                         Grid.Row="5"
+                         AcceptsReturn="True"
+                         TextWrapping="NoWrap"
+                         FontFamily="Consolas"
+                         FontSize="13"
+                         Watermark="function render(data) { return html; }"
+                         TextChanged="Input_OnTextChanged" />
+
+                <TextBlock x:Name="StatusText"
+                           Grid.Row="6"
+                           Text="Waiting for input..." />
+
+                <Border Grid.Row="7"
+                        BorderBrush="#333"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        ClipToBounds="True">
+
+                        <NativeWebView x:Name="WebPreview" />
+
+                </Border>
+
+        </Grid>
+        
 </Window>
