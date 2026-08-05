@@ -143,7 +143,9 @@ public partial class MainWindow : Window
 
         box.Height = newHeight;
     }
-
+    
+    /******************************************************************************************************************/
+    
     private void RunPipeline()
     {
         // Rohes JSON aus dem JSON-Editor.
@@ -155,13 +157,13 @@ public partial class MainWindow : Window
         try
         {
             // JSON wird geparst, damit C# daraus die TreeView bauen kann.
-            using var document = JsonDocument.Parse(json);
+            using var jsonDocument = JsonDocument.Parse(json);
 
             // Die JSON-Struktur wird direkt als TreeView angezeigt.
-            JsonTree.ItemsSource = ToTree(document.RootElement);
+            JsonTree.ItemsSource = ToTree(jsonDocument.RootElement);
 
             // Das gleiche JSON wird als String an die WebView/JavaScript-Pipeline weitergegeben.
-            ShowInWebView(BuildHtml(document.RootElement.GetRawText(), script));
+            ShowInWebView(BuildHtml(jsonDocument.RootElement.GetRawText(), script));
 
             StatusText.Text = "JSON valid. TreeView and WebView updated.";
         }
@@ -174,6 +176,8 @@ public partial class MainWindow : Window
             ShowInWebView("<h2 style='font-family:Arial;color:red;padding:20px;'>Invalid JSON or script error.</h2>");
         }
     }
+    
+    /******************************************************************************************************************/
 
     private static IEnumerable<TreeViewItem> ToTree(JsonElement element)
     {
@@ -195,6 +199,8 @@ public partial class MainWindow : Window
         };
     }
 
+    /******************************************************************************************************************/
+    
     private static TreeViewItem ToItem(string name, JsonElement element)
     {
         // Objekte und Arrays können Unterelemente haben.
@@ -210,6 +216,8 @@ public partial class MainWindow : Window
             ItemsSource = hasChildren ? ToTree(element) : null
         };
     }
+    
+    /******************************************************************************************************************/
 
     private static string BuildHtml(string json, string script)
     {
@@ -271,6 +279,8 @@ public partial class MainWindow : Window
         </script>
         """;
     }
+    
+    /******************************************************************************************************************/
 
     private void ShowInWebView(string html)
     {
