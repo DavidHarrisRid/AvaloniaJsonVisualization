@@ -46,6 +46,7 @@ public static class VisualizationSamples
             """
         ),
 
+        // Wetterdaten sind von Open Meteo
         new VisualizationSample(
             name: "Expert example",
             description: "A large example that show how JSON can be visualised in JavaScript",
